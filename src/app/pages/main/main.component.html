@@ -1,0 +1,12 @@
+<p>
+  main works!
+</p>
+<form [formGroup]="authForm">
+  <mat-form-field>
+    <input matInput formControlName="login" placeholder="Login">
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput formControlName="password" placeholder="Password">
+  </mat-form-field>
+  <button mat-raised-button color="primary" (click)="save()">Saves</button>
+</form>

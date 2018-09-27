@@ -1,0 +1,6 @@
+<form [formGroup]="todoForm">
+  <mat-form-field>
+    <input matInput formControlName="task" placeholder="Task">
+  </mat-form-field>
+  <button mat-raised-button color="primary" (click)="create()">Add</button>
+</form>

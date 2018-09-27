@@ -1,0 +1,91 @@
+<div class="coin" *ngIf="curCoin">
+    <mat-card-title>{{curCoin.name}} ({{curCoin.symbol}})</mat-card-title>
+    <mat-card-content>
+        <mat-accordion>
+            <mat-expansion-panel (opened)="panelOpenState = true"
+                                 (closed)="panelOpenState = false">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>Percent Change</mat-panel-title>
+                    <mat-panel-description>
+                        <span [innerHTML]="curCoin.percent_change_1h | growthFall"></span>
+                    </mat-panel-description>
+                </mat-expansion-panel-header>
+                <mat-list>
+                    <mat-list-item>
+                        <strong>1 hour:</strong>
+                        <span [innerHTML]="curCoin.percent_change_1h | growthFall"></span>
+                    </mat-list-item>
+                    <mat-list-item>
+                        <strong>24 hours:</strong>
+                        <span [innerHTML]="curCoin.percent_change_24h | growthFall"></span>
+                    </mat-list-item>
+                    <mat-list-item>
+                        <strong>7 days:</strong>
+                        <span [innerHTML]="curCoin.percent_change_7d | growthFall"></span>
+                    </mat-list-item>
+                </mat-list>
+            </mat-expansion-panel>
+            <mat-expansion-panel (opened)="panelOpenState = true"
+                                 (closed)="panelOpenState = false">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>Price</mat-panel-title>
+                    <mat-panel-description>{{curCoin | priceCurrency: curCurrency}}</mat-panel-description>
+                </mat-expansion-panel-header>
+                <mat-list>
+                    <mat-list-item>
+                        <strong>BTC:</strong>
+                        {{curCoin.price_btc}}
+                    </mat-list-item>
+                    <mat-list-item>
+                        <strong>USD:</strong>
+                        {{curCoin | priceCurrency: curCurrency}}
+                    </mat-list-item>
+                </mat-list>
+            </mat-expansion-panel>
+            <mat-expansion-panel (opened)="panelOpenState = true"
+                                 (closed)="panelOpenState = false">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>Marker Cap</mat-panel-title>
+                    <mat-panel-description>
+                        <span *ngIf="curCurrency === 'USD'">$</span>
+                        {{curCoin['market_cap_' + curCurrency.toLowerCase()]}}
+                    </mat-panel-description>
+                </mat-expansion-panel-header>
+                <mat-list>
+                    <mat-list-item>
+                        <strong>BTC:</strong>
+                        {{curCoin.available_supply}}
+                    </mat-list-item>
+                    <mat-list-item>
+                        <strong>USD:</strong>
+                        <span *ngIf="curCurrency === 'USD'">$</span>
+                        {{curCoin['market_cap_' + curCurrency.toLowerCase()]}}
+                    </mat-list-item>
+                </mat-list>
+            </mat-expansion-panel>
+            <mat-expansion-panel (opened)="panelOpenState = true"
+                                 (closed)="panelOpenState = false">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>Supply</mat-panel-title>
+                    <mat-panel-description>{{curCoin.max_supply | currency}}</mat-panel-description>
+                </mat-expansion-panel-header>
+                <mat-list>
+                    <mat-list-item>
+                        <strong>Max Supply:</strong>
+                        {{curCoin.max_supply | currency}}
+                    </mat-list-item>
+                    <mat-list-item>
+                        <strong>Total Supply:</strong>
+                        {{curCoin.total_supply}}
+                    </mat-list-item>
+                </mat-list>
+            </mat-expansion-panel>
+        </mat-accordion>
+
+        <mat-list>
+            <mat-list-item><strong>Last update:</strong> {{curCoin.last_updated*1000 | date}} </mat-list-item>
+        </mat-list>
+
+        <a [routerLink]="'/list'" mat-raised-button color="primary">Back to list</a>
+    </mat-card-content>
+</div>

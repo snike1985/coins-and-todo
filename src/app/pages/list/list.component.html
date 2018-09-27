@@ -1,0 +1,71 @@
+<p>
+  list works!
+</p>
+
+<mat-form-field>
+  <mat-select placeholder="Currency" [(value)]="selected" (change)="onChange(selected)">
+    <mat-option *ngFor="let item of currency" [value]="item">
+      {{ item }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+
+<mat-form-field>
+  <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+</mat-form-field>
+
+<mat-table [dataSource]="dataSource" matSort>
+
+  <ng-container matColumnDef="rank">
+    <mat-header-cell *matHeaderCellDef mat-sort-header> No. </mat-header-cell>
+    <mat-cell *matCellDef="let element"> {{element.rank}} </mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="name">
+    <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
+    <mat-cell *matCellDef="let element"> {{element.name}} ( {{element.symbol}} ) </mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="marker_cap">
+    <mat-header-cell *matHeaderCellDef mat-sort-header> Marker Cap </mat-header-cell>
+    <mat-cell *matCellDef="let element"> {{element.symbol}} </mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="price_usd">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>
+      <span>Price&nbsp;</span>
+      <span *ngIf="selected;else usdCurrency">{{selected}}</span>
+      <ng-template #usdCurrency>USD</ng-template>
+    </mat-header-cell>
+    <mat-cell *matCellDef="let element">{{element | priceCurrency: selected}}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="price_btc">
+    <mat-header-cell *matHeaderCellDef mat-sort-header> Price BTC </mat-header-cell>
+    <mat-cell *matCellDef="let element"> {{element.price_btc | currency}} </mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="change_24h">
+    <mat-header-cell *matHeaderCellDef mat-sort-header> Change (24h) </mat-header-cell>
+    <mat-cell *matCellDef="let element">
+      <!--<div *ngIf="element.percent_change_24h > 0; else down" class="coin-up">-->
+        <!--{{element.percent_change_24h}} %-->
+      <!--</div>-->
+      <!--<ng-template #down><div class="coin-down">{{element.percent_change_24h}} %</div></ng-template>-->
+
+      <div [ngClass]="{ 'coin-up': element.percent_change_24h >= 0, 'coin-down' : element.percent_change_24h < 0 }">
+        {{element.percent_change_24h}} %
+      </div>
+    </mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="['rank', 'name', 'marker_cap', 'price_usd', 'price_btc', 'change_24h']"></mat-header-row>
+  <mat-row
+          *matRowDef="let row; columns: ['rank', 'name', 'marker_cap', 'price_usd', 'price_btc', 'change_24h']"
+          (click)="selectRow(row)"
+          [routerLink]="'/list/' + row.id"
+  >
+  </mat-row>
+
+</mat-table>
+
+<mat-paginator #paginator
+               [pageSize]="10"
+               [pageSizeOptions]="[5, 10, 20, 100]">
+</mat-paginator>

@@ -1,0 +1,6 @@
+<div class="todo-item">
+  <mat-checkbox [checked]="todo.completed" (change)="onToggle($event)">{{todo.title}}</mat-checkbox>
+  <button mat-raised-button class="mat-icon-button" (click)="onDelete()">
+    <i class="material-icons">delete</i>
+  </button>
+</div>
